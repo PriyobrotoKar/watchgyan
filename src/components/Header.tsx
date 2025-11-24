@@ -1,25 +1,19 @@
 "use client";
 import { usePathname } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import EditorHeader from "@/features/blog/components/Header";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getRecentBlogs } from "@/features/blog/interface/blog.controller";
 import BlogCard from "@/features/blog/components/BlogCard";
 import RotatingText from "./ui/animations/RotatingText/RotatingText";
 import Image from "next/image";
 import { Blog } from "@prisma/client";
+import { XIcon } from "lucide-react";
 
 const navlinks = [
   {
@@ -114,7 +108,7 @@ export const PublicHeader = () => {
             ...navlinks,
             {
               name: "Contact",
-              link: "mailto:priyobrotokar@gmail.com",
+              link: "mailto:watchgyanhindi@outlook.com",
             },
           ]}
           title="Recent Blogs"
@@ -203,27 +197,29 @@ const MobileNav = ({
   blogs: Blog[];
 }) => {
   const path = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant={"ghost"} size={"icon"}>
-          <FeatherIcon
-            icon="menu"
-            className={cn(
-              "text-foreground transition-colors duration-500",
-              path === "/blog" && "dark",
-            )}
-          />
-        </Button>
-      </DialogTrigger>
-      <DialogContent
-        closeClassName="top-8 right-6"
-        className="flex min-h-svh max-w-full flex-col gap-12 px-6 py-8 !duration-500 !will-change-transform animate-in data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-100 data-[state=open]:fade-in-100 data-[state=closed]:!zoom-out-100 data-[state=open]:!zoom-in-100 data-[state=closed]:slide-out-to-right-full data-[state=closed]:slide-out-to-top-[50%] data-[state=open]:slide-in-from-right-full data-[state=open]:slide-in-from-top-[50%]"
+    <div>
+      <Button onClick={() => setOpen(true)} variant={"ghost"} size={"icon"}>
+        <FeatherIcon
+          icon="menu"
+          className={cn(
+            "text-foreground transition-colors duration-500",
+            path === "/blog" && "dark",
+          )}
+        />
+      </Button>
+      <div
+        data-state={open ? "open" : "closed"}
+        className="fixed left-0 top-0 flex min-h-svh w-svw max-w-full translate-x-full flex-col gap-12 bg-background px-6 py-8 transition-transform duration-300 data-[state='open']:translate-x-0"
       >
-        <DialogTitle>
+        <div className="flex justify-between">
           <Logo />
-        </DialogTitle>
+          <Button variant={"ghost"} onClick={() => setOpen(false)}>
+            <XIcon />
+          </Button>
+        </div>
 
         <nav>
           <ul className="flex flex-wrap gap-4">
@@ -252,7 +248,14 @@ const MobileNav = ({
                       isActive && "text-foreground",
                     )}
                   >
-                    <DialogClose className="uppercase">{link.name}</DialogClose>
+                    <Button
+                      variant={"ghost"}
+                      size={"sm"}
+                      className="h-fit p-0"
+                      onClick={() => setOpen(false)}
+                    >
+                      {link.name}
+                    </Button>
                   </Link>
                 </li>
               );
@@ -276,7 +279,7 @@ const MobileNav = ({
           <Logo />
           <p className="text-md">© Copyright 2025 · All rights reserved</p>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };

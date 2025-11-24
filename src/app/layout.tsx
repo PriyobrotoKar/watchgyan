@@ -3,6 +3,7 @@ import "./globals.css";
 import { DMSans, PlayflairDisplay } from "@/lib/fonts";
 import ReactQueryProvider from "@/providers/QueryClientProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
@@ -28,6 +29,7 @@ export default function RootLayout({
       >
         <Toaster richColors />
         <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Analytics />
       </body>
     </html>
   );

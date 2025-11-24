@@ -29,6 +29,7 @@
     "@tiptap/extension-table-row": "^2.11.5",
     "@tiptap/extension-youtube": "^2.11.5",
     "@types/jsdom": "^21.1.7",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",
